@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Processor.h"
+#include <fstream>
 
 namespace vlc {
 
@@ -21,21 +22,21 @@ namespace vlc {
     //Gray
     cv::Mat GrayImage;
     cv::cvtColor(Image, GrayImage, CV_RGB2GRAY);
-    vlc::Tools::ShowImage("GrayImage", GrayImage);
-    vlc::Tools::PrintMessage("GrayImage", std::to_string(GrayImage.size[0]));
-    vlc::Tools::PrintMessage("GrayImage", std::to_string(GrayImage.size[1]));
+    //vlc::Tools::ShowImage("GrayImage", GrayImage);
+    //vlc::Tools::PrintMessage("GrayImage", std::to_string(GrayImage.size[0]));
+    //vlc::Tools::PrintMessage("GrayImage", std::to_string(GrayImage.size[1]));
     Image = GrayImage;
 
     //Blur
     cv::Mat BlurImage;
     cv::blur(Image, BlurImage, cv::Size(50, 50));
-    vlc::Tools::ShowImage("BlurImage", BlurImage);
+    //vlc::Tools::ShowImage("BlurImage", BlurImage);
     Image = BlurImage;
 
     //Threshold
     cv::Mat ThresholdImage;
     cv::threshold(Image, ThresholdImage, 0, 255, cv::THRESH_OTSU);
-    vlc::Tools::ShowImage("ThresholdImage", ThresholdImage);
+    //vlc::Tools::ShowImage("ThresholdImage", ThresholdImage);
     Image = ThresholdImage;
 
     //Contours
@@ -44,7 +45,7 @@ namespace vlc {
     cv::findContours(Image, *Contours, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
     for (unsigned i = 0; i < Contours->size(); ++i)
       cv::drawContours(ContoursImage, *Contours, i, cv::Scalar(255, 255, 255), 5);
-    vlc::Tools::ShowImage("ContoursImage", ContoursImage);
+    //vlc::Tools::ShowImage("ContoursImage", ContoursImage);
 
     //EnclosingCircle
     cv::Mat EnclosingCircleImage = GrayImage.clone();
@@ -54,7 +55,7 @@ namespace vlc {
       cv::minEnclosingCircle(((*Contours)[i]), (*Centers)[i], (*Radiuses)[i]);
     for (unsigned i = 0; i < Contours->size(); ++i)
       cv::circle(EnclosingCircleImage, (*Centers)[i], (int)(*Radiuses)[i], cv::Scalar(255, 255, 255), 5);
-    vlc::Tools::ShowImage("EnclosingCircle", EnclosingCircleImage);
+    //vlc::Tools::ShowImage("EnclosingCircle", EnclosingCircleImage);
 
     cv::Mat SliceImage = GrayImage.clone();
     double Fs = 1.0 / Camera->RollingShutterRate;
@@ -76,7 +77,7 @@ namespace vlc {
       cv::Mat SubMask = ThresholdImage(cv::Rect(Left, Top, Right - Left, Bottom - Top)).clone();
       cv::Mat SubMaskedImage;
       SubImage.copyTo(SubMaskedImage, SubMask);
-      vlc::Tools::ShowImage("SubImage" + std::to_string(i), SubMaskedImage);
+      //vlc::Tools::ShowImage("SubImage" + std::to_string(i), SubMaskedImage);
       cv::Mat BGRVector;
       if (true) {
         cv::Mat BGR[3];
@@ -257,12 +258,26 @@ namespace vlc {
         iter->PositionInRoom = (Room->Transmitters[iter->ID]);
 		sprintf(cstr, "%d (%0.1lf,%0.1lf) -> (%0.1lf,%0.1lf,%0.1lf)", iter->ID, iter->PositionInImage.x, iter->PositionInImage.y, iter->PositionInRoom.x, iter->PositionInRoom.y, iter->PositionInRoom.z);
 		vlc::Tools::PrintMessage("Pair", cstr);
+
+		std::ofstream fout();
+		std::ofstream out;
+		out.open("pairs.txt", std::ios::app);
+		out << iter->ID << ' '
+			<< iter->PositionInImage.x <<' '
+			<< iter->PositionInImage.y << ' '
+			<< iter->PositionInRoom.x << ' '
+			<< iter->PositionInRoom.y << ' '
+			<< iter->PositionInRoom.z << ' '
+			<< '\n';
+
 		sprintf(cstr, "((%0.1lf,%0.1lf),((%0.1lf,%0.1lf,%0.1lf),)),", iter->PositionInImage.x, iter->PositionInImage.y, iter->PositionInRoom.x, iter->PositionInRoom.y, iter->PositionInRoom.z);
 		lightStr += cstr;
 		iter++;
       }
 	}
 	printf("lights=[%s]\n", lightStr.c_str());
+	//std::ofstream fout("pairs.txt");
+	//fout << lightStr.c_str() << '\n';
   }
 
   void Processor::AOA(std::vector<vlc::Transmitter>* Lights, CameraInfo * Camera)

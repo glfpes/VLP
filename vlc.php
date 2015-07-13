@@ -1,11 +1,11 @@
 <?php
   if(isset($_POST['submit'])){
     print_r($_FILES);
-    move_uploaded_file($_FILES['file']['tmp_name'],'C:\Users\Jason\OneDrive\AVLC\project\vlc\vlc-localization-master\vlc-localization-master\processing\jason.jpg');
-    system('cd C:\Users\Jason\OneDrive\AVLC\project\vlc\vlc-localization-master\vlc-localization-master\processing\ && C:\Python27\python.exe run_jason.py');
+    move_uploaded_file($_FILES['file']['tmp_name'],'C:\Users\glfpes\Documents\GitHub\VLP\vlc-localization-master\processing\jason.jpg');
+    system('cd C:\Users\glfpes\Documents\GitHub\VLP\vlc-localization-master\processing\ && C:\Python27\python.exe run_jason.py');
   }
   echo "<hr/>";
-  $fp = fopen('C:\Users\Jason\OneDrive\AVLC\project\vlc\vlc-localization-master\vlc-localization-master\processing\log.txt','r'); 
+  $fp = fopen('C:\Users\glfpes\Documents\GitHub\VLP\vlc-localization-master\processing\log.txt','r'); 
   if($fp){
     for($i=1;! feof($fp);$i++){
       echo fgets($fp). "<br />";
