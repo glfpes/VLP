@@ -9,7 +9,8 @@ int main(int argc, char** argv)
 
   GetCurrentDirectoryA(MAX_PATH, cstr);
   string CurrentDirectory = cstr;
-  string ImageFilename = CurrentDirectory + "\\..\\..\\images\\20150604\\4.jpg";
+  string ImageFilename = CurrentDirectory + "\\..\\..\\images\\20150715\\jason.jpg";
+
   cv::Mat image;
   image = cv::imread(ImageFilename, cv::IMREAD_COLOR); // Read the file
 
@@ -50,6 +51,6 @@ int main(int argc, char** argv)
   vlc::Processor::PairLights(Lights, Room);
 
 
-  cv::waitKey(0); // Wait for a keystroke in the window
+  //cv::waitKey(0); // Wait for a keystroke in the window
   return 0;
 }

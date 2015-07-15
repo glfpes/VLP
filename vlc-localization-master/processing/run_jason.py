@@ -74,7 +74,7 @@ Control debug level with DEBUG evinronment environment variable.
 					imag_proc(args.filename, 0, camera, debug)
 			for c,r,f in zip(centers, radii, estimated_frequencies):
 				logger.info('{}: {} pixel radius. Freq {}'.format(c, r, f))
-			logger.info('shape = {}'.format(shape))
+			#logger.info('shape = {}'.format(shape))
 		except Exception as e:
 			logger.warn('Exception: {}'.format(e))
 			raise

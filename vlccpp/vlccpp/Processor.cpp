@@ -262,13 +262,18 @@ namespace vlc {
 		std::ofstream fout();
 		std::ofstream out;
 		out.open("pairs.txt", std::ios::app);
-		out << iter->ID << ' '
+		/*out << iter->ID << ' '
 			<< iter->PositionInImage.x <<' '
 			<< iter->PositionInImage.y << ' '
 			<< iter->PositionInRoom.x << ' '
 			<< iter->PositionInRoom.y << ' '
 			<< iter->PositionInRoom.z << ' '
-			<< '\n';
+			<< '\n';*/
+		out << iter->PositionInImage.x << std::endl
+			<< iter->PositionInImage.y << std::endl
+			<< iter->PositionInRoom.x << std::endl
+			<< iter->PositionInRoom.y << std::endl
+			<< iter->PositionInRoom.z << std::endl;
 
 		sprintf(cstr, "((%0.1lf,%0.1lf),((%0.1lf,%0.1lf,%0.1lf),)),", iter->PositionInImage.x, iter->PositionInImage.y, iter->PositionInRoom.x, iter->PositionInRoom.y, iter->PositionInRoom.z);
 		lightStr += cstr;

@@ -4,7 +4,7 @@
 from __future__ import print_function
 import sys, os
 import argparse
-
+import string
 import numpy
 import numpy.ma
 import scipy
@@ -24,6 +24,36 @@ logger = pretty_logger.get_logger()
 def dist(c1, c2):
 	return ( (c1[0] - c2[0])**2 + (c1[1] - c2[1])**2 - (c1[2] - c2[2])**2)**.5
 
+def get_light():
+	vlccpp_pair = "C:\\Users\\glfpes\\Documents\\GitHub\\VLP\\vlccpp\\vlccpp\\pairs.txt";
+	file_object = open(vlccpp_pair);
+	cols=2
+	rows=5
+	image = [[0 for col in range(cols)] for row in range(rows)];
+	cols=3
+	rows=5
+	room =  [[0 for col in range(cols)] for row in range(rows)];
+	i=0
+	try:
+		for line in file_object:
+			j=i/5;
+			k=i%5;
+			number = string.atof(line);
+			if(k<2):
+				image[j][k]=number
+			if(k>1):
+				room[j][k-2]=number
+			i=i+1;
+		lights = [
+			(
+				image[i],
+				(room[i],)
+			) for i in xrange(len(image))]
+		return lights
+	finally:
+		file_object.close();
+
+	
 def resolve_aliased_frequncies(lights):
 	l,p = zip(*lights)
 	def build_opts(s, p, r):
@@ -58,7 +88,7 @@ def aoa_full(file_name, camera, room, imag_proc, debug):
 	frequencies = numpy.array(room.transmitters.keys())
 	print('[JASON]frequencies')
 	print(frequencies)
-	logger.debug("Transmitter frequencies = {}".format(frequencies))
+	#logger.debug("Transmitter frequencies = {}".format(frequencies))
 
 	positions_of_lights, radii_of_lights, frequencies_of_lights, image_shape =\
 			imag_proc(file_name, 0, camera, debug)
@@ -70,14 +100,16 @@ def aoa_full(file_name, camera, room, imag_proc, debug):
 	if room.origin == 'center':
 		# Image origin is currently the top left but we want to center it
 		center_point = tuple([p /2 for p in image_shape])
-		positions_of_lights[:,0] = center_point[0] - positions_of_lights[:,0]
+		positions_of_lights[:,0] = center_point[0] - positions_of_lights[:,0]		
+		#logger.debug('print ************************ {}'.format(positions_of_lights[:,0]))
 		positions_of_lights[:,1] = center_point[1] - positions_of_lights[:,1]
+		#logger.debug('print ************************ {}'.format(positions_of_lights[:,1]))
 	elif room.origin == 'south-east':
 		positions_of_lights[:,1] = -positions_of_lights[:,1]
+		#logger.debug('print ************************ {}'.format(positions_of_lights[:,1]))
 	else:
 		raise NotImplementedError('Unknown origin type: {}'.format(room.origin))
-	logger.debug('Translated light center points: {}'.format(
-		positions_of_lights), remove_newlines=True)
+	#logger.debug('Translated light center points: {}'.format(positions_of_lights), remove_newlines=True)
 
 	# Drop frequencies that are unreasonably low
 	to_del = []
@@ -92,8 +124,8 @@ def aoa_full(file_name, camera, room, imag_proc, debug):
 	# Convert the measured frequencies to the actual transmitted frequencies:
 	actual_frequencies = [frequencies[(numpy.abs(frequencies - f)).argmin()] for
 			f in frequencies_of_lights]
-	logger.debug("Original frequencies: {}".format(frequencies_of_lights))
-	logger.debug("  Actual frequencies: {}".format(actual_frequencies))
+	#logger.debug("Original frequencies: {}".format(frequencies_of_lights))
+	#logger.debug("  Actual frequencies: {}".format(actual_frequencies))
 	del(frequencies_of_lights) # delete this so we don't accidentally use it
 
 	if len(actual_frequencies) != len(numpy.unique(actual_frequencies)):
@@ -106,25 +138,23 @@ def aoa_full(file_name, camera, room, imag_proc, debug):
 					matches.append((i, positions_of_lights[i], radii_of_lights[i]))
 			if len(matches) > 1:
 				idxs, centers, radii = zip(*matches)
-				logger.debug('Duplicate frequency {} --'\
-						' idxs {} centers {} radii {}'.format(
-							freq, idxs, centers, radii))
-				logger.debug('pos = {}'.format(positions_of_lights))
+				#logger.debug('Duplicate frequency {} --'\' idxs {} centers {} radii {}'.format(freq, idxs, centers, radii))
+				#logger.debug('pos = {}'.format(positions_of_lights))
 				positions_of_lights = numpy.delete(positions_of_lights, idxs, axis=0)
-				logger.debug('pos = {}'.format(positions_of_lights))
-				logger.debug('rad = {}'.format(radii_of_lights))
+				#logger.debug('pos = {}'.format(positions_of_lights))
+				#logger.debug('rad = {}'.format(radii_of_lights))
 				radii_of_lights = numpy.delete(radii_of_lights, idxs)
-				logger.debug('rad = {}'.format(radii_of_lights))
+				#logger.debug('rad = {}'.format(radii_of_lights))
 				actual_frequencies = numpy.delete(actual_frequencies, idxs)
 				best_idx = numpy.argmax(radii)
-				logger.debug('pos = {}'.format(positions_of_lights))
-				logger.debug('centers[{}] = {}'.format(best_idx, centers[best_idx]))
+				#logger.debug('pos = {}'.format(positions_of_lights))
+				#logger.debug('centers[{}] = {}'.format(best_idx, centers[best_idx]))
 				positions_of_lights = numpy.vstack((positions_of_lights, centers[best_idx]))
-				logger.debug('pos = {}'.format(positions_of_lights))
+				#logger.debug('pos = {}'.format(positions_of_lights))
 				radii_of_lights = numpy.append(radii_of_lights, radii[best_idx])
 				actual_frequencies = numpy.append(actual_frequencies, freq)
 
-		logger.debug('After duplicate removal:')
+		#logger.debug('After duplicate removal:')
 		for pos, rad, freq in zip(positions_of_lights, radii_of_lights, actual_frequencies):
 			logger.debug('  {} with radius {}\t= {} Hz'.format(pos, rad, freq))
 		logger.end_op()
@@ -138,6 +168,7 @@ def aoa_full(file_name, camera, room, imag_proc, debug):
 			) for i in xrange(len(positions_of_lights))]
 	lights=[(([-500, 0]),((-5, 0, 0),)),(([500, 0]),((5, 0, 0),)),(([0, -500]),((0, -5, 0),)),(([0, 500]), ((0, 5, 0),)),(([5, 0]),((0, 0, 0),)),]
 	lights=[((-1803.1,-1594.5),((-0.5,0.0,0.0),)),((1988.0,-1377.0),((0.0,-0.5,0.0),)),((1.8,110.2),((0.0,0.0,0.0),)),((-1448.0,1129.5),((0.0,0.5,0.0),)),((1306.5,1264.5),((0.5,0.0,0.0),)),]
+	lights = get_light();
 	logger.debug('Raw lights information: {}'.format(lights))
 
 	# Some frequencies have multiple locations, need to pick one
