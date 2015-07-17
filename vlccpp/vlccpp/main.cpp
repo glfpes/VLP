@@ -6,10 +6,13 @@ using namespace std;
 int main(int argc, char** argv)
 {
   char cstr[MAX_PATH];
+  char* filename_c = argv[1];
+  //string filename = filename_c;
+  string filename = "5.jpg";
 
   GetCurrentDirectoryA(MAX_PATH, cstr);
   string CurrentDirectory = cstr;
-  string ImageFilename = CurrentDirectory + "\\..\\..\\images\\20150715\\jason.jpg";
+  string ImageFilename = CurrentDirectory + "\\..\\..\\images\\20150716\\" + filename;
 
   cv::Mat image;
   image = cv::imread(ImageFilename, cv::IMREAD_COLOR); // Read the file

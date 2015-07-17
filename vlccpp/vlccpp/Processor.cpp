@@ -16,27 +16,27 @@ namespace vlc {
     else {
       RotateImage = cv::Mat(Image);
     }
-    //vlc::Tools::ShowImage("RotateImage", RotateImage);
+    vlc::Tools::ShowImage("RotateImage", RotateImage);
     Image = RotateImage;
 
     //Gray
     cv::Mat GrayImage;
     cv::cvtColor(Image, GrayImage, CV_RGB2GRAY);
-    //vlc::Tools::ShowImage("GrayImage", GrayImage);
-    //vlc::Tools::PrintMessage("GrayImage", std::to_string(GrayImage.size[0]));
-    //vlc::Tools::PrintMessage("GrayImage", std::to_string(GrayImage.size[1]));
+    vlc::Tools::ShowImage("GrayImage", GrayImage);
+    vlc::Tools::PrintMessage("GrayImage", std::to_string(GrayImage.size[0]));
+    vlc::Tools::PrintMessage("GrayImage", std::to_string(GrayImage.size[1]));
     Image = GrayImage;
 
     //Blur
     cv::Mat BlurImage;
     cv::blur(Image, BlurImage, cv::Size(50, 50));
-    //vlc::Tools::ShowImage("BlurImage", BlurImage);
+    vlc::Tools::ShowImage("BlurImage", BlurImage);
     Image = BlurImage;
 
     //Threshold
     cv::Mat ThresholdImage;
     cv::threshold(Image, ThresholdImage, 0, 255, cv::THRESH_OTSU);
-    //vlc::Tools::ShowImage("ThresholdImage", ThresholdImage);
+    vlc::Tools::ShowImage("ThresholdImage", ThresholdImage);
     Image = ThresholdImage;
 
     //Contours
@@ -45,7 +45,7 @@ namespace vlc {
     cv::findContours(Image, *Contours, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
     for (unsigned i = 0; i < Contours->size(); ++i)
       cv::drawContours(ContoursImage, *Contours, i, cv::Scalar(255, 255, 255), 5);
-    //vlc::Tools::ShowImage("ContoursImage", ContoursImage);
+    vlc::Tools::ShowImage("ContoursImage", ContoursImage);
 
     //EnclosingCircle
     cv::Mat EnclosingCircleImage = GrayImage.clone();
@@ -55,7 +55,7 @@ namespace vlc {
       cv::minEnclosingCircle(((*Contours)[i]), (*Centers)[i], (*Radiuses)[i]);
     for (unsigned i = 0; i < Contours->size(); ++i)
       cv::circle(EnclosingCircleImage, (*Centers)[i], (int)(*Radiuses)[i], cv::Scalar(255, 255, 255), 5);
-    //vlc::Tools::ShowImage("EnclosingCircle", EnclosingCircleImage);
+    vlc::Tools::ShowImage("EnclosingCircle", EnclosingCircleImage);
 
     cv::Mat SliceImage = GrayImage.clone();
     double Fs = 1.0 / Camera->RollingShutterRate;
@@ -77,7 +77,7 @@ namespace vlc {
       cv::Mat SubMask = ThresholdImage(cv::Rect(Left, Top, Right - Left, Bottom - Top)).clone();
       cv::Mat SubMaskedImage;
       SubImage.copyTo(SubMaskedImage, SubMask);
-      //vlc::Tools::ShowImage("SubImage" + std::to_string(i), SubMaskedImage);
+      vlc::Tools::ShowImage("SubImage" + std::to_string(i), SubMaskedImage);
       cv::Mat BGRVector;
       if (true) {
         cv::Mat BGR[3];
@@ -102,12 +102,12 @@ namespace vlc {
         }
         cv::merge(std::vector<cv::Mat>({ BGRVectorDenoise[0],BGRVectorDenoise[1],BGRVectorDenoise[2] }), BGRVector);
 
-        //vlc::Tools::ShowImage("RImage" + std::to_string(i), BGR[2]);
-        //vlc::Tools::ShowImage("RThresholdImage" + std::to_string(i), BGRThresholdImage[2]);
-        //vlc::Tools::ShowImage("GImage" + std::to_string(i), BGR[1]);
-        //vlc::Tools::ShowImage("GThresholdImage" + std::to_string(i), BGRThresholdImage[1]);
-        //vlc::Tools::ShowImage("BImage" + std::to_string(i), BGR[0]);
-        //vlc::Tools::ShowImage("BThresholdImage" + std::to_string(i), BGRThresholdImage[0]);
+        vlc::Tools::ShowImage("RImage" + std::to_string(i), BGR[2]);
+        vlc::Tools::ShowImage("RThresholdImage" + std::to_string(i), BGRThresholdImage[2]);
+        vlc::Tools::ShowImage("GImage" + std::to_string(i), BGR[1]);
+        vlc::Tools::ShowImage("GThresholdImage" + std::to_string(i), BGRThresholdImage[1]);
+        vlc::Tools::ShowImage("BImage" + std::to_string(i), BGR[0]);
+        vlc::Tools::ShowImage("BThresholdImage" + std::to_string(i), BGRThresholdImage[0]);
 
       }
 
@@ -124,9 +124,9 @@ namespace vlc {
         cv::Mat HRed;
         cv::Mat HBlue;
         cv::Mat HGreen;
-        //vlc::Tools::ShowImage("HImage" + std::to_string(i), H);
-        //vlc::Tools::ShowImage("LImage" + std::to_string(i), L);
-        //vlc::Tools::ShowImage("SImage" + std::to_string(i), S);
+        vlc::Tools::ShowImage("HImage" + std::to_string(i), H);
+        vlc::Tools::ShowImage("LImage" + std::to_string(i), L);
+        vlc::Tools::ShowImage("SImage" + std::to_string(i), S);
         cv::adaptiveThreshold(L, LHigh, 255, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, 21, -64);
         //cv::inRange(L, cv::Scalar(255 * 0.6), cv::Scalar(255 * 1), LHigh);
         cv::adaptiveThreshold(L, LLow, 255, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, 21, 64);

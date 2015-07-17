@@ -1,16 +1,9 @@
-﻿Build started 7/15/2015 11:58:11 AM.
-     1>Project "C:\Users\glfpes\Documents\GitHub\VLP\vlccpp\vlccpp\vlccpp.vcxproj" on node 2 (Rebuild target(s)).
+﻿Build started 7/16/2015 11:46:27 AM.
+     1>Project "C:\Users\glfpes\Documents\GitHub\VLP\vlccpp\vlccpp\vlccpp.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         D:\Microsoft Visual Studio Express 2013\VC\bin\CL.exe /c /ID:\OpenCV2.4\opencv\build\x86\vc12\..\..\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Debug\vlccpp.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt CameraInfo.cpp main.cpp Processor.cpp RoomInfo.cpp stdafx.cpp Tools.cpp Transmitter.cpp
-         Transmitter.cpp
-         Tools.cpp
-     1>c:\users\glfpes\documents\github\vlp\vlccpp\vlccpp\tools.cpp(33): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-         stdafx.cpp
-         RoomInfo.cpp
+         D:\Microsoft Visual Studio Express 2013\VC\bin\CL.exe /c /ID:\OpenCV2.4\opencv\build\x86\vc12\..\..\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Debug\vlccpp.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Processor.cpp
          Processor.cpp
      1>c:\users\glfpes\documents\github\vlp\vlccpp\vlccpp\processor.cpp(262): warning C4930: 'std::ofstream fout(void)': prototyped function not called (was a variable definition intended?)
-         main.cpp
-         CameraInfo.cpp
        Link:
          D:\Microsoft Visual Studio Express 2013\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\glfpes\Documents\GitHub\VLP\vlccpp\Debug\vlccpp.exe" /INCREMENTAL /NOLOGO /LIBPATH:D:\OpenCV2.4\opencv\build\x86\vc12\lib /LIBPATH:D:\OpenCV2.4\opencv\build\x86\vc12\lib opencv_calib3d2411d.lib opencv_contrib2411d.lib opencv_core2411d.lib opencv_features2d2411d.lib opencv_flann2411d.lib opencv_gpu2411d.lib opencv_highgui2411d.lib opencv_imgproc2411d.lib opencv_legacy2411d.lib opencv_ml2411d.lib opencv_nonfree2411d.lib opencv_objdetect2411d.lib opencv_ocl2411d.lib opencv_photo2411d.lib opencv_stitching2411d.lib opencv_superres2411d.lib opencv_ts2411d.lib opencv_video2411d.lib opencv_videostab2411d.lib opencv_calib3d2411d.lib opencv_contrib2411d.lib opencv_core2411d.lib opencv_features2d2411d.lib opencv_flann2411d.lib opencv_gpu2411d.lib opencv_highgui2411d.lib opencv_imgproc2411d.lib opencv_legacy2411d.lib opencv_ml2411d.lib opencv_nonfree2411d.lib opencv_objdetect2411d.lib opencv_ocl2411d.lib opencv_photo2411d.lib opencv_stitching2411d.lib opencv_superres2411d.lib opencv_ts2411d.lib opencv_video2411d.lib opencv_videostab2411d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\glfpes\Documents\GitHub\VLP\vlccpp\Debug\vlccpp.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\glfpes\Documents\GitHub\VLP\vlccpp\Debug\vlccpp.lib" /MACHINE:X86 Debug\CameraInfo.obj
          Debug\main.obj
@@ -20,8 +13,8 @@
          Debug\Tools.obj
          Debug\Transmitter.obj
          vlccpp.vcxproj -> C:\Users\glfpes\Documents\GitHub\VLP\vlccpp\Debug\vlccpp.exe
-     1>Done Building Project "C:\Users\glfpes\Documents\GitHub\VLP\vlccpp\vlccpp\vlccpp.vcxproj" (Rebuild target(s)).
+     1>Done Building Project "C:\Users\glfpes\Documents\GitHub\VLP\vlccpp\vlccpp\vlccpp.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:06.15
+Time Elapsed 00:00:01.87
